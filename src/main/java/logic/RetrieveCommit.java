@@ -25,24 +25,24 @@ public class RetrieveCommit {
     private static final String PROJNAME = "PARQUET";
 
     static String path = "";
-    static String completePath= "";
-    static String csvCommitPath= "";
-    static String csvJiraPath= "";
-    static String csvTemporaryPath= "";
+    static String completePath = "";
+    static String csvCommitPath = "";
+    static String csvJiraPath = "";
+    static String csvTemporaryPath = "";
     static String csvFinalPath = "";
 
     private static File dir;
 
     //Conversione da stringa in Date
-    public Date stringToDate(String s){
+    public Date stringToDate(String s) {
 
         Date result = null;
-        try{
+        try {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
             result = dateFormat.parse(s);
 
-        }catch (ParseException e){
+        } catch (ParseException e) {
 
             e.printStackTrace();
 
@@ -53,28 +53,28 @@ public class RetrieveCommit {
     }
 
     //Confronto due date
-    public Date compareDate(Date date1, Date date2){
+    public Date compareDate(Date date1, Date date2) {
 
         Date lastDate;
 
-        if(date1.after(date2)){
+        if (date1.after(date2)) {
 
             lastDate = date1;
 
-        }else{
+        } else {
 
             lastDate = date2;
 
         }
 
-            return lastDate;
+        return lastDate;
 
     }
 
     //Clono la repository all'interno di resources
     public static void cloneRepository() throws GitAPIException {
 
-        try{
+        try {
 
             InputStream inputStream = new FileInputStream("C:\\Users\\leona\\Desktop\\Project\\src\\main\\resources\\filepath.properties");
             Properties properties = new Properties();
@@ -89,22 +89,22 @@ public class RetrieveCommit {
 
             dir = new File(path);
 
-        }catch (IOException e){
+        } catch (IOException e) {
 
             e.printStackTrace();
 
         }
 
-        if(!dir.exists()){
+        if (!dir.exists()) {
 
             logger.info("Cloning repository");
 
-            if(dir.mkdir()){
+            if (dir.mkdir()) {
 
                 Git.cloneRepository().setURI("https://github.com/apache/parquet-mr.git").setDirectory(dir).call();
                 logger.info("Successful");
 
-            }else{
+            } else {
 
                 logger.info("Directory creation failed");
 
@@ -113,7 +113,7 @@ public class RetrieveCommit {
         }
 
         //Scrivo tutti i commit nel file commit.txt
-        try{
+        try {
 
             FileWriter fileWriter1 = new FileWriter(csvCommitPath);
             CSVWriter csvWriter = new CSVWriter(fileWriter1);
@@ -127,8 +127,7 @@ public class RetrieveCommit {
 
             List<Ref> branches = git.branchList().call();
 
-            for (Ref ref : branches)
-            {
+            for (Ref ref : branches) {
 
                 logger.info(ref.getName());
 
@@ -146,12 +145,12 @@ public class RetrieveCommit {
                 String fullMessage = revCommit.getFullMessage();
 
                 //Inserisco nel file csv solo i commit che rispettano lo standard
-                if(fullMessage.startsWith(PROJNAME)){
+                if (fullMessage.startsWith(PROJNAME)) {
 
                     String shortCommit = fullMessage.substring(0, fullMessage.indexOf(' '));
-                    if(shortCommit.contains(":")){
+                    if (shortCommit.contains(":")) {
 
-                        shortCommit = shortCommit.substring(0, shortCommit.length()-1);
+                        shortCommit = shortCommit.substring(0, shortCommit.length() - 1);
 
                     }
 
@@ -164,7 +163,7 @@ public class RetrieveCommit {
             csvWriter.flush();
             csvWriter.close();
 
-        } catch (IOException e){
+        } catch (IOException e) {
 
             logger.log(Level.WARNING, String.valueOf(e));
 
@@ -173,7 +172,7 @@ public class RetrieveCommit {
     }
 
     //Creo un nuovo file csv con l'intersezione dei commit totali e quelli di jira
-    public void createFinalCsv() {
+    public void intersectCsv() {
 
         try {
 
@@ -208,6 +207,17 @@ public class RetrieveCommit {
             csvReader1.close();
             csvWriter.flush();
             csvWriter.close();
+        } catch (IOException e) {
+
+            logger.log(Level.WARNING, String.valueOf(e));
+
+        }
+
+    }
+
+    public void createFinalCsv() throws IOException {
+
+        try{
 
             FileReader fR2 = new FileReader(csvTemporaryPath);
             CSVReader csvReader2 = new CSVReader(fR2);
@@ -215,7 +225,7 @@ public class RetrieveCommit {
             FileWriter fileWriter = new FileWriter(csvFinalPath);
             CSVWriter csvWriter1 = new CSVWriter(fileWriter);
 
-            List <String[]> list3;
+            List<String[]> list3;
             list3 = csvReader2.readAll();
 
             Date date;
@@ -226,18 +236,18 @@ public class RetrieveCommit {
             HashMap<String, String> hashMap = new HashMap<>();
 
             //Prendo soltanto il commit più recente relativo ad un determinato ticket
-            for(String[] str: list3){
+            for (String[] str : list3) {
 
-                if(!hashMap.containsKey(str[1])){
+                if (!hashMap.containsKey(str[1])) {
 
                     hashMap.put(str[1], str[0]);
 
-                }else{
+                } else {
 
                     date = stringToDate(str[0]);
                     date1 = stringToDate(hashMap.get(str[1]));
                     dateFinal = compareDate(date, date1);
-                    if(dateFinal == date){
+                    if (dateFinal == date) {
 
                         hashMap.put(str[1], str[0]);
 
@@ -247,39 +257,39 @@ public class RetrieveCommit {
 
             }
 
-            //scrivo nel csv finale
-            for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+        //scrivo nel csv finale
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
 
-                csvWriter1.writeNext(new String[]{entry.getValue(), entry.getKey()});
+            csvWriter1.writeNext(new String[]{entry.getValue(), entry.getKey()});
 
-            }
+        }
 
-            csvReader2.close();
-            csvWriter1.flush();
-            csvWriter1.close();
+        csvReader2.close();
+        csvWriter1.flush();
+        csvWriter1.close();
 
-            //Eliminazione csv temporaneo
-            try {
+        //Eliminazione csv temporaneo
+        try {
 
-                File file = new File(csvTemporaryPath);
+            File file = new File(csvTemporaryPath);
 
-                if(file.delete()) {
+            if (file.delete()) {
 
-                    logger.info(file.getName() + " is deleted!");
+                logger.info(file.getName() + " is deleted!");
 
-                } else {
+            } else {
 
-                    logger.warning("Delete operation is failed.");
-
-                }
-
-            } catch(Exception e) {
-
-                e.printStackTrace();
+                logger.warning("Delete operation is failed.");
 
             }
 
-        }catch (IOException e){
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        }catch(IOException e){
 
             logger.log(Level.WARNING, String.valueOf(e));
 
@@ -287,11 +297,14 @@ public class RetrieveCommit {
 
     }
 
+
+
     public static void main(String[] args) throws JSONException, GitAPIException, IOException {
 
         logger.info("Scrivo tutti i commit");
         new RetrieveJiraTicket().writeJiraCSV();
         cloneRepository();
+        new RetrieveCommit().intersectCsv();
         new RetrieveCommit().createFinalCsv();
 
     }
