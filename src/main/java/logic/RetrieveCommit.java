@@ -11,6 +11,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.json.JSONException;
 
 import java.io.*;
+import java.nio.file.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -268,26 +269,6 @@ public class RetrieveCommit {
         csvWriter1.flush();
         csvWriter1.close();
 
-        //Eliminazione csv temporaneo
-        try {
-
-            File file = new File(csvTemporaryPath);
-
-            if (file.delete()) {
-
-                logger.info(file.getName() + " is deleted!");
-
-            } else {
-
-                logger.warning("Delete operation is failed.");
-
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
 
         }catch(IOException e){
 
@@ -297,7 +278,9 @@ public class RetrieveCommit {
 
     }
 
-
+    public void cleanUp(Path path) throws NoSuchFileException, DirectoryNotEmptyException, IOException {
+        Files.delete(path);
+    }
 
     public static void main(String[] args) throws JSONException, GitAPIException, IOException {
 
@@ -306,6 +289,8 @@ public class RetrieveCommit {
         cloneRepository();
         new RetrieveCommit().intersectCsv();
         new RetrieveCommit().createFinalCsv();
+        new RetrieveCommit().cleanUp(Paths.get(csvTemporaryPath));
+
 
     }
 
