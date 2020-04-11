@@ -8,7 +8,6 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.json.JSONException;
 
 import java.io.*;
 import java.nio.file.*;
@@ -18,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static logic.RetrieveJiraTicket.writeJiraCSV;
 
 
 public class RetrieveCommit {
@@ -287,7 +288,7 @@ public class RetrieveCommit {
     public static void main(String[] args) throws GitAPIException, IOException {
 
         logger.info("Scrivo tutti i commit");
-        new RetrieveJiraTicket().writeJiraCSV();
+        writeJiraCSV();
         cloneRepository();
         new RetrieveCommit().intersectCsv();
         new RetrieveCommit().createFinalCsv();

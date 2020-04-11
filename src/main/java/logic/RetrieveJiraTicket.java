@@ -1,12 +1,12 @@
 package logic;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -37,12 +37,14 @@ public class RetrieveJiraTicket {
 
     public static JSONArray readJsonArrayFromUrl(String url) throws IOException{
         InputStream is = new URL(url).openStream();
+        JSONArray json;
 
         try {
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
-            JSONArray json = new JSONArray(jsonText);
+
+            json = new JSONArray(jsonText);
 
             return json;
 
@@ -57,11 +59,13 @@ public class RetrieveJiraTicket {
 
         InputStream is = new URL(url).openStream();
 
+        JSONObject json;
+
         try{
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
+            json = new JSONObject(jsonText);
 
             return json;
 
@@ -73,7 +77,7 @@ public class RetrieveJiraTicket {
 
     }
 
-    public void writeJiraCSV() throws IOException {
+    public static void writeJiraCSV() throws IOException {
 
         try{
 
@@ -96,7 +100,9 @@ public class RetrieveJiraTicket {
 
         String projName ="PARQUET";
 
-        Integer j = 0, i = 0, total = 1;
+        Integer j = 0;
+        Integer i = 0;
+        Integer total = 1;
         //Get JSON API for closed bugs w/ AV in the project
 
         do {
