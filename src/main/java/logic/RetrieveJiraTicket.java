@@ -17,7 +17,7 @@ import com.opencsv.CSVWriter;
 
 public class RetrieveJiraTicket {
 
-    final static Logger logger = Logger.getLogger(String.valueOf(RetrieveCommit.class));
+    static final Logger logger = Logger.getLogger(String.valueOf(RetrieveCommit.class));
 
     static String csvJiraPath= "";
 
@@ -35,7 +35,7 @@ public class RetrieveJiraTicket {
 
     }
 
-    public static JSONArray readJsonArrayFromUrl(String url) throws IOException, JSONException {
+    public static JSONArray readJsonArrayFromUrl(String url) throws IOException{
         InputStream is = new URL(url).openStream();
 
         try {
@@ -53,7 +53,7 @@ public class RetrieveJiraTicket {
         }
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    public static JSONObject readJsonFromUrl(String url) throws IOException{
 
         InputStream is = new URL(url).openStream();
 

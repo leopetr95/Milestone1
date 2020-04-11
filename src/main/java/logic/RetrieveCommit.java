@@ -278,11 +278,13 @@ public class RetrieveCommit {
 
     }
 
-    public void cleanUp(Path path) throws NoSuchFileException, DirectoryNotEmptyException, IOException {
+    public void cleanUp(Path path) throws IOException {
+
         Files.delete(path);
+
     }
 
-    public static void main(String[] args) throws JSONException, GitAPIException, IOException {
+    public static void main(String[] args) throws GitAPIException, IOException {
 
         logger.info("Scrivo tutti i commit");
         new RetrieveJiraTicket().writeJiraCSV();
