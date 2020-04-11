@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +15,9 @@ import java.util.logging.Logger;
 import com.opencsv.CSVWriter;
 
 public class RetrieveJiraTicket {
+
+    private RetrieveJiraTicket() {
+    }
 
     static final Logger logger = Logger.getLogger(String.valueOf(RetrieveCommit.class));
 
@@ -39,9 +41,8 @@ public class RetrieveJiraTicket {
         InputStream is = new URL(url).openStream();
         JSONArray json;
 
-        try {
+        try(BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
 
             json = new JSONArray(jsonText);
@@ -61,9 +62,8 @@ public class RetrieveJiraTicket {
 
         JSONObject json;
 
-        try{
+        try(BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))){
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
             json = new JSONObject(jsonText);
 
