@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4f7e3dc9-5a71-467c-ac1f-d586d9488e12" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Project" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/main/resources/DirGit" />
+  </component>
+  <component name="ProjectId" id="1ZoN7pual19I6K11UOV45ZwJ5hj" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RunManager" selected="Application.RetrieveCommit">
+    <configuration name="RetrieveCommit" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="logic.RetrieveCommit" />
+      <module name="Project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="logic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RetrieveJiraTicket" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="logic.RetrieveJiraTicket" />
+      <module name="Project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="logic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.RetrieveCommit" />
+        <item itemvalue="Application.RetrieveJiraTicket" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4f7e3dc9-5a71-467c-ac1f-d586d9488e12" name="Default Changelist" comment="" />
+      <created>1585501321200</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585501321200</updated>
+      <workItem from="1585501323794" duration="1971000" />
+      <workItem from="1585750481735" duration="7428000" />
+      <workItem from="1586010031277" duration="5065000" />
+      <workItem from="1586333262216" duration="18733000" />
+      <workItem from="1586529596873" duration="5229000" />
+      <workItem from="1586593365435" duration="5751000" />
+      <workItem from="1586611562067" duration="1013000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1032" y="178" key="#Project_Structure" timestamp="1585751407110">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1032" y="178" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1585751407110" />
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585501967880">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585501967880" />
+    <state width="1877" height="458" key="GridCell.Tab.0.bottom" timestamp="1586612107363">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="458" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1586612107363" />
+    <state width="1877" height="458" key="GridCell.Tab.0.center" timestamp="1586612107363">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="458" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1586612107363" />
+    <state width="1877" height="458" key="GridCell.Tab.0.left" timestamp="1586612107363">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="458" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1586612107363" />
+    <state width="1877" height="458" key="GridCell.Tab.0.right" timestamp="1586612107363">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="458" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1586612107363" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1586611683853">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1586611683853" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1586611683853">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1586611683853" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1586611683853">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1586611683853" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1586611683853">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1586611683853" />
+    <state x="970" y="174" key="Maven.ArtifactSearchDialog" timestamp="1585755556894">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="970" y="174" key="Maven.ArtifactSearchDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585755556894" />
+    <state x="880" y="165" key="SettingsEditor" timestamp="1585502157315">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="880" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1585502157315" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1586442253303">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1586442253303" />
+  </component>
+</project>
