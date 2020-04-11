@@ -76,9 +76,8 @@ public class RetrieveCommit {
     //Clono la repository all'interno di resources
     public static void cloneRepository() throws GitAPIException {
 
-        try {
+        try(InputStream inputStream = new FileInputStream("C:\\Users\\leona\\Desktop\\Project\\src\\main\\resources\\filepath.properties")) {
 
-            InputStream inputStream = new FileInputStream("C:\\Users\\leona\\Desktop\\Project\\src\\main\\resources\\filepath.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
 
@@ -115,10 +114,10 @@ public class RetrieveCommit {
         }
 
         //Scrivo tutti i commit nel file commit.txt
-        try {
+        try(FileWriter fileWriter1 = new FileWriter(csvCommitPath);
+            CSVWriter csvWriter = new CSVWriter(fileWriter1)) {
 
-            FileWriter fileWriter1 = new FileWriter(csvCommitPath);
-            CSVWriter csvWriter = new CSVWriter(fileWriter1);
+
             //Impostazione di Git e della repository
             Git git = Git.open(new File(completePath));
 
@@ -163,7 +162,6 @@ public class RetrieveCommit {
             }
 
             csvWriter.flush();
-            csvWriter.close();
 
         } catch (IOException e) {
 
@@ -176,15 +174,15 @@ public class RetrieveCommit {
     //Creo un nuovo file csv con l'intersezione dei commit totali e quelli di jira
     public void intersectCsv() {
 
-        try {
-
-            FileReader fR = new FileReader(csvCommitPath);
+        try(FileReader fR = new FileReader(csvCommitPath);
             CSVReader csvReader = new CSVReader(fR);
             FileReader fR1 = new FileReader(csvJiraPath);
             CSVReader csvReader1 = new CSVReader(fR1);
 
             FileWriter fW = new FileWriter(csvTemporaryPath);
-            CSVWriter csvWriter = new CSVWriter(fW);
+            CSVWriter csvWriter = new CSVWriter(fW)) {
+
+
 
             List<String[]> list1 = csvReader.readAll();
             List<String[]> list2 = csvReader1.readAll();
@@ -208,7 +206,6 @@ public class RetrieveCommit {
             csvReader.close();
             csvReader1.close();
             csvWriter.flush();
-            csvWriter.close();
         } catch (IOException e) {
 
             logger.log(Level.WARNING, String.valueOf(e));
@@ -219,13 +216,11 @@ public class RetrieveCommit {
 
     public void createFinalCsv() throws IOException {
 
-        try{
-
-            FileReader fR2 = new FileReader(csvTemporaryPath);
+        try(FileReader fR2 = new FileReader(csvTemporaryPath);
             CSVReader csvReader2 = new CSVReader(fR2);
 
             FileWriter fileWriter = new FileWriter(csvFinalPath);
-            CSVWriter csvWriter1 = new CSVWriter(fileWriter);
+            CSVWriter csvWriter1 = new CSVWriter(fileWriter)){
 
             List<String[]> list3;
             list3 = csvReader2.readAll();

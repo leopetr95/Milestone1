@@ -79,9 +79,8 @@ public class RetrieveJiraTicket {
 
     public static void writeJiraCSV() throws IOException {
 
-        try{
+        try(InputStream inputStream = new FileInputStream("C:\\Users\\leona\\Desktop\\Project\\src\\main\\resources\\filepath.properties")){
 
-            InputStream inputStream = new FileInputStream("C:\\Users\\leona\\Desktop\\Project\\src\\main\\resources\\filepath.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
 
@@ -92,9 +91,6 @@ public class RetrieveJiraTicket {
             e.printStackTrace();
 
         }
-
-        FileWriter fileWriter = new FileWriter(csvJiraPath);
-        CSVWriter csvWriter = new CSVWriter(fileWriter);
 
         List<String[]> dataList = new ArrayList<>();
 
@@ -129,11 +125,11 @@ public class RetrieveJiraTicket {
 
             }
 
-            try{
+            try(FileWriter fileWriter = new FileWriter(csvJiraPath);
+                CSVWriter csvWriter = new CSVWriter(fileWriter);){
 
                 csvWriter.writeAll(dataList);
                 csvWriter.flush();
-                csvWriter.close();
 
             }catch (IOException e){
 
