@@ -21,11 +21,11 @@ import java.util.logging.Logger;
 
 public class RetrieveCommit {
 
-    final static Logger logger = Logger.getLogger(String.valueOf(RetrieveCommit.class));
+    static final Logger logger = Logger.getLogger(String.valueOf(RetrieveCommit.class));
     private static final String PROJNAME = "PARQUET";
 
     static String path = "";
-    static String Cpath= "";
+    static String completePath= "";
     static String csvCommitPath= "";
     static String csvJiraPath= "";
     static String csvTemporaryPath= "";
@@ -34,7 +34,7 @@ public class RetrieveCommit {
     private static File dir;
 
     //Conversione da stringa in Date
-    public Date StringToDate(String s){
+    public Date stringToDate(String s){
 
         Date result = null;
         try{
@@ -72,7 +72,7 @@ public class RetrieveCommit {
     }
 
     //Clono la repository all'interno di resources
-    public void Clone() throws GitAPIException {
+    public static void cloneRepository() throws GitAPIException {
 
         try{
 
@@ -81,7 +81,7 @@ public class RetrieveCommit {
             properties.load(inputStream);
 
             path = properties.getProperty("path");
-            Cpath = properties.getProperty("Cpath");
+            completePath = properties.getProperty("Cpath");
             csvCommitPath = properties.getProperty("csvCommitPath");
             csvJiraPath = properties.getProperty("csvJiraPath");
             csvTemporaryPath = properties.getProperty("csvTemporaryPath");
@@ -118,9 +118,9 @@ public class RetrieveCommit {
             FileWriter fileWriter1 = new FileWriter(csvCommitPath);
             CSVWriter csvWriter = new CSVWriter(fileWriter1);
             //Impostazione di Git e della repository
-            Git git = Git.open(new File(Cpath));
+            Git git = Git.open(new File(completePath));
 
-            Repository repository = FileRepositoryBuilder.create(new File(Cpath));
+            Repository repository = FileRepositoryBuilder.create(new File(completePath));
             String repo = String.valueOf(repository);
 
             logger.info(repo);
@@ -173,7 +173,7 @@ public class RetrieveCommit {
     }
 
     //Creo un nuovo file csv con l'intersezione dei commit totali e quelli di jira
-    public void createCSV() {
+    public void createFinalCsv() {
 
         try {
 
@@ -234,8 +234,8 @@ public class RetrieveCommit {
 
                 }else{
 
-                    date = StringToDate(str[0]);
-                    date1 = StringToDate(hashMap.get(str[1]));
+                    date = stringToDate(str[0]);
+                    date1 = stringToDate(hashMap.get(str[1]));
                     dateFinal = compareDate(date, date1);
                     if(dateFinal == date){
 
@@ -291,8 +291,8 @@ public class RetrieveCommit {
 
         logger.info("Scrivo tutti i commit");
         new RetrieveJiraTicket().writeJiraCSV();
-        new RetrieveCommit().Clone();
-        new RetrieveCommit().createCSV();
+        cloneRepository();
+        new RetrieveCommit().createFinalCsv();
 
     }
 
