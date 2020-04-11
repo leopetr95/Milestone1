@@ -203,8 +203,6 @@ public class RetrieveCommit {
 
             }
 
-            csvReader.close();
-            csvReader1.close();
             csvWriter.flush();
         } catch (IOException e) {
 
@@ -254,17 +252,14 @@ public class RetrieveCommit {
 
             }
 
-        //scrivo nel csv finale
-        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+            //scrivo nel csv finale
+            for (Map.Entry<String, String> entry : hashMap.entrySet()) {
 
-            csvWriter1.writeNext(new String[]{entry.getValue(), entry.getKey()});
+                csvWriter1.writeNext(new String[]{entry.getValue(), entry.getKey()});
 
-        }
+            }
 
-        csvReader2.close();
-        csvWriter1.flush();
-        csvWriter1.close();
-
+            csvWriter1.flush();
 
         }catch(IOException e){
 
