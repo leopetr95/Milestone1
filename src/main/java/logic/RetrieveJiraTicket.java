@@ -111,8 +111,6 @@ public class RetrieveJiraTicket {
                     + "%22status%22=%22resolved%22)AND%22resolution%22=%22fixed%22&fields=key,resolutiondate,versions,created&startAt="
                     + i.toString() + "&maxResults=" + j.toString();
 
-
-
             JSONObject json = readJsonFromUrl(url);
 
             JSONArray issues = json.getJSONArray("issues");
