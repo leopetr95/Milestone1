@@ -21,7 +21,7 @@ public class RetrieveJiraTicket {
 
     static final Logger logger = Logger.getLogger(String.valueOf(RetrieveCommit.class));
 
-    static String csvJiraPath= "";
+    static String csvJiraPath = "";
 
     private static String readAll(Reader rd) throws IOException {
 
@@ -37,11 +37,11 @@ public class RetrieveJiraTicket {
 
     }
 
-    public static JSONArray readJsonArrayFromUrl(String url) throws IOException{
+    public static JSONArray readJsonArrayFromUrl(String url) throws IOException {
         InputStream is = new URL(url).openStream();
         JSONArray json;
 
-        try(BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+        try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
 
             String jsonText = readAll(rd);
 
@@ -56,20 +56,20 @@ public class RetrieveJiraTicket {
         }
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException{
+    public static JSONObject readJsonFromUrl(String url) throws IOException {
 
         InputStream is = new URL(url).openStream();
 
         JSONObject json;
 
-        try(BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))){
+        try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
 
             String jsonText = readAll(rd);
             json = new JSONObject(jsonText);
 
             return json;
 
-        }finally{
+        } finally {
 
             is.close();
 
@@ -79,14 +79,14 @@ public class RetrieveJiraTicket {
 
     public static void writeJiraCSV() throws IOException {
 
-        try(InputStream inputStream = new FileInputStream("C:\\Users\\leona\\Desktop\\Project\\src\\main\\resources\\filepath.properties")){
+        try (InputStream inputStream = new FileInputStream("C:\\Users\\leona\\Desktop\\Project\\src\\main\\resources\\filepath.properties")) {
 
             Properties properties = new Properties();
             properties.load(inputStream);
 
             csvJiraPath = properties.getProperty("csvJiraPath");
 
-        }catch (IOException e){
+        } catch (IOException e) {
 
             e.printStackTrace();
 
@@ -94,7 +94,7 @@ public class RetrieveJiraTicket {
 
         List<String[]> dataList = new ArrayList<>();
 
-        String projName ="PARQUET";
+        String projName = "PARQUET";
 
         Integer j = 0;
         Integer i = 0;
@@ -107,9 +107,11 @@ public class RetrieveJiraTicket {
             j = i + 1000;
 
             String url = "https://issues.apache.org/jira/rest/api/2/search?jql=project=%22"
-                    + projName + "%22AND%22issueType%22=%22Bug%22AND(%22status%22=%22closed%22OR"
+                    + projName + "%22AND%22issueType%22=%22Bug%22OR%22issueType%22=%22New%20Feature%22AND(%22status%22=%22closed%22OR"
                     + "%22status%22=%22resolved%22)AND%22resolution%22=%22fixed%22&fields=key,resolutiondate,versions,created&startAt="
                     + i.toString() + "&maxResults=" + j.toString();
+
+
 
             JSONObject json = readJsonFromUrl(url);
 
@@ -119,19 +121,19 @@ public class RetrieveJiraTicket {
 
             for (; i < total && i < j; i++) {
                 //Iterate through each bug
-                String key = issues.getJSONObject(i%1000).get("key").toString();
+                String key = issues.getJSONObject(i % 1000).get("key").toString();
 
-                dataList.add(new String[] {key});
+                dataList.add(new String[]{key});
 
             }
 
-            try(FileWriter fileWriter = new FileWriter(csvJiraPath);
-                CSVWriter csvWriter = new CSVWriter(fileWriter);){
+            try (FileWriter fileWriter = new FileWriter(csvJiraPath);
+                 CSVWriter csvWriter = new CSVWriter(fileWriter);) {
 
                 csvWriter.writeAll(dataList);
                 csvWriter.flush();
 
-            }catch (IOException e){
+            } catch (IOException e) {
 
                 logger.log(Level.WARNING, String.valueOf(e));
 
@@ -141,8 +143,6 @@ public class RetrieveJiraTicket {
 
 
     }
-
-
 
 }
 

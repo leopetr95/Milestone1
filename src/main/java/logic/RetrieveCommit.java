@@ -32,6 +32,8 @@ public class RetrieveCommit {
     static String csvJiraPath = "";
     static String csvTemporaryPath = "";
     static String csvFinalPath = "";
+    static String csvFilteredFinalPath = "";
+    static String counterFilePath = "";
 
     private static File dir;
 
@@ -87,6 +89,8 @@ public class RetrieveCommit {
             csvJiraPath = properties.getProperty("csvJiraPath");
             csvTemporaryPath = properties.getProperty("csvTemporaryPath");
             csvFinalPath = properties.getProperty("csvFinalPath");
+            csvFilteredFinalPath = properties.getProperty("csvFilteredFinalPath");
+            counterFilePath = properties.getProperty("counterFilePath");
 
             dir = new File(path);
 
@@ -113,7 +117,7 @@ public class RetrieveCommit {
 
         }
 
-        //Scrivo tutti i commit nel file commit.txt
+        //Scrivo tutti i commit nel file commit.csv
         try(FileWriter fileWriter1 = new FileWriter(csvCommitPath);
             CSVWriter csvWriter = new CSVWriter(fileWriter1)) {
 
@@ -181,8 +185,6 @@ public class RetrieveCommit {
 
             FileWriter fW = new FileWriter(csvTemporaryPath);
             CSVWriter csvWriter = new CSVWriter(fW)) {
-
-
 
             List<String[]> list1 = csvReader.readAll();
             List<String[]> list2 = csvReader1.readAll();
@@ -252,7 +254,7 @@ public class RetrieveCommit {
 
             }
 
-            //scrivo nel csv finale
+            //write in final csv
             for (Map.Entry<String, String> entry : hashMap.entrySet()) {
 
                 csvWriter1.writeNext(new String[]{entry.getValue(), entry.getKey()});
@@ -275,15 +277,151 @@ public class RetrieveCommit {
 
     }
 
+    public int[] filterFinalCSV(){
+
+        int[] integers = new int[2];
+
+        try(FileReader fR= new FileReader(csvFinalPath);
+            CSVReader csvReader = new CSVReader(fR);
+            FileWriter fileWriter = new FileWriter(csvFilteredFinalPath);
+            CSVWriter csvWriter = new CSVWriter(fileWriter);){
+
+            List<String[]> list = csvReader.readAll();
+            List<String[]> listToWrite = new ArrayList<>();
+            List<Integer> anotherList = new ArrayList<>();
+
+            for(String[] strings: list){
+
+                String string = strings[0].substring(0,3);
+                String string1 = strings[0].substring(6, 10);
+                String finalString = string + string1;
+
+                listToWrite.add(new String[] {finalString, strings[1]});
+                anotherList.add(Integer.parseInt(finalString.substring(3, 7)));
+
+            }
+
+            Collections.sort(anotherList);
+            int min = anotherList.get(0);
+            int max = anotherList.get(anotherList.size()-1);
+
+            integers = new int[2];
+            integers[0] = min;
+            integers[1] = max;
+
+            csvWriter.writeAll(listToWrite);
+
+        }catch (IOException e){
+
+            e.printStackTrace();
+
+        }
+
+        return integers;
+
+    }
+
+    public void createCounter(int min, int max){
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for(int i = min; i < max + 1; i++){
+
+            for(int j = 1; j < 13; j++){
+
+                if(j > 9){
+
+                    map.put(j + "/" + i, 0);
+
+                }else{
+
+                    map.put("0" + j + "/" + i, 0);
+
+
+                }
+
+            }
+
+        }
+
+        List<String[]> anotherList = new ArrayList<>();
+
+        try(FileReader fileReader = new FileReader(csvFilteredFinalPath);
+            CSVReader csvReader = new CSVReader(fileReader);
+            FileWriter fileWriter = new FileWriter(counterFilePath);
+            CSVWriter csvWriter = new CSVWriter(fileWriter);){
+
+            List<String[]> list = csvReader.readAll();
+
+            for(String[] strings: list){
+
+                if(map.containsKey(strings[0])){
+
+                    int integer = map.get(strings[0]);
+                    map.replace(strings[0],integer+1);
+
+                }
+
+            }
+
+            for(Map.Entry<String, Integer> entry: map.entrySet()){
+
+                anotherList.add(new String[]{entry.getKey(), entry.getValue().toString()});
+
+            }
+
+            List<String[]> sortedList = sortByDate(anotherList);
+            csvWriter.writeNext(new String[]{"Date", "Counter"});
+            csvWriter.writeAll(sortedList);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private SimpleDateFormat format = new SimpleDateFormat("MM/yyyy");
+
+    private List<String[]> sortByDate(List<String[]> list) {
+        /**
+         * Questo metodo esegue il sorting della lista
+         * andando a considerare la data.
+         * Return list sorted.
+         */
+
+        list.sort((strings, t1) -> {
+            Date date1 = new Date();
+            Date date2 = new Date();
+            try {
+                date1 = format.parse(strings[0]);
+                date2 = format.parse(t1[0]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return date1.compareTo(date2);
+        });
+
+        return list;
+
+    }
+
+
     public static void main(String[] args) throws GitAPIException, IOException {
 
         logger.info("Scrivo tutti i commit");
         writeJiraCSV();
         cloneRepository();
+
         new RetrieveCommit().intersectCsv();
         new RetrieveCommit().createFinalCsv();
+        int[] integers = new RetrieveCommit().filterFinalCSV();
+        int min = integers[0];
+        int max = integers[1];
+        new RetrieveCommit().createCounter(min, max);
         new RetrieveCommit().cleanUp(Paths.get(csvTemporaryPath));
-
+        new RetrieveCommit().cleanUp(Paths.get(csvJiraPath));
 
     }
 
