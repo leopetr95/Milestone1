@@ -110,7 +110,7 @@ public class RetrieveJiraTicket {
                     + projName + "%22AND%22issueType%22=%22Bug%22OR%22issueType%22=%22New%20Feature%22AND(%22status%22=%22closed%22OR"
                     + "%22status%22=%22resolved%22)AND%22resolution%22=%22fixed%22&fields=key,resolutiondate,versions,created&startAt="
                     + i.toString() + "&maxResults=" + j.toString();
-            
+
 
             JSONObject json = readJsonFromUrl(url);
 
